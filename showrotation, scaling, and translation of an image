@@ -1,0 +1,69 @@
+clc;close ;clear;
+I=rgb2gray(imread(fullpath(getIPCVpath() + "/images/puffin.png")));
+[m , n] = size(I);
+for i = 1: m
+for j =1: n
+//Scaling
+J(2*i,2*j) = I(i,j);
+J1(1*i,2*j) = I(i,j);
+J2(2*i,1*j) = I(i,j);
+//Rotation
+p = i*cos(%pi/2)+j*sin(%pi/2);
+q = -i*sin(%pi/2)+j*cos(%pi/2);
+p = ceil(abs(p)+0.0001);
+q = ceil(abs(q)+0.0001);
+K(p,q)=I(i,j);
+//shear transformation x direction
+u = i +0.2* j ;
+v = j ;
+L(u,v)= I(i,j);
+// shear transform y direction
+u = i;
+v = 0.2 * i + j ;
+M(u,v)= I(i,j);
+end
+end
+figure(1);title('original Image');
+imshow(I);
+figure(2);title('Scaled Image width = height= 2');
+imshow(J);
+figure(3);title('Scaled Image column width = 2');
+imshow(J1);
+figure(4);title('Scaled Image rows height = 2');
+imshow(J2);
+figure(5);title('Rotated Image');
+imshow(K);
+// Translation for x  = 20 
+mat = [  1 0 0;...
+         0 1 0;...
+        20 0 1];      
+S2 = imtransform(I,mat,'affine');
+figure(6);
+title('Translation for y = 20');
+imshow(S2);
+ 
+// Translation for y  = 20
+mat = [  1  0 0;...
+         0  1 0;...
+         0 20 1];
+S3 = imtransform(I,mat,'affine');
+figure(7);
+title('Translation for x = 20');
+imshow(S3);
+ 
+// Translation for (20,20)
+mat = [   1  0 0;...
+          0  1 0;...
+         20 20 1];
+S4 = imtransform(I,mat,'affine');
+figure(8);
+title('Translation for (20,20)');
+imshow(S4);
+
+figure(9);
+title('shear transform x direction');
+imshow(L);
+
+figure(10);
+title('shear transform y direction');
+imshow(M);
