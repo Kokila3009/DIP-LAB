@@ -1,1 +1,1 @@
-# DIP-LAB
+Didital image processing lab
